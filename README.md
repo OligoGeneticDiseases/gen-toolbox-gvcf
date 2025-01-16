@@ -118,18 +118,27 @@ Splits multi-allelic variants in a VDS.
 
 split_vds = hl.vds.split_multi(vds)
 
-Research Context
+## Research Context
 
-Project
-	•	Title: Oligogenic Inheritance in Genetic Diseases
-	•	Objective: Collate large numbers of VCF files, annotate variants, and create variant frequency tables in a pipeline fashion.
-	•	Funding: Estonian Research Council, Grant PSG774.
-	•	Directed By: Tartu University Hospital Centre of Medical Genetics and Tartu University Institute of Clinical Medicine.
+### Project
 
-Ethics and Privacy
-	•	Ethics Protocol: Approved under protocol 362/T-6 by the University of Tartu Research Ethics Committee.
-	•	Data Privacy: All analyses are performed in accordance with the data protection plan. Data is not publicly available.
+• Title: Oligogenic Inheritance in Genetic Diseases
 
-Principal Investigator
-	•	Dr. Sander Pajusalu
+• Objective: Collate large numbers of VCF files, annotate variants, and create variant frequency tables in a pipeline fashion.
+
+• Funding: Estonian Research Council, Grant PSG774.
+
+• Directed By: Tartu University Hospital Centre of Medical Genetics and Tartu University Institute of Clinical Medicine.
+
+
+### Ethics and Privacy
+
+• Ethics Protocol: Approved under protocol 362/T-6 by the University of Tartu Research Ethics Committee.
+
+• Data Privacy: All analyses are performed in accordance with the data protection plan. Data is not publicly available.
+
+
+### Principal Investigator
+
+• Dr. Sander Pajusalu
 University of Tartu, Faculty of Medicine, Institute of Clinical Medicine.
