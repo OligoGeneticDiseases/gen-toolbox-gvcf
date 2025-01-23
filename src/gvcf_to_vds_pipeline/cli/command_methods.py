@@ -1,9 +1,9 @@
 import hail as hl
 from pathlib import Path
 
-from src.data_processing.gvcf.read import gather_gvcfs
-from src.data_processing.gvcf.process import build_or_combine_vds
-from src.data_processing.vds.operations import (
+from gvcf_to_vds_pipeline.data_processing.gvcf.read import gather_gvcfs
+from gvcf_to_vds_pipeline.data_processing.gvcf.process import build_or_combine_vds
+from gvcf_to_vds_pipeline.data_processing.vds.operations import (
     filter_samples,
     filter_intervals,
     run_sample_qc,

@@ -1,8 +1,7 @@
 import sys
 import traceback
 
-from src.cli.command_setup import setup_parser, command_handlers, setup_spark_config
-
+from gvcf_to_vds_pipeline.cli.command_setup import setup_parser, command_handlers, setup_spark_config
 
 def main():
     """
@@ -34,7 +33,6 @@ def main():
     except Exception as e:
         print("ERROR: " + str(e))
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()

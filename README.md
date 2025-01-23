@@ -2,6 +2,8 @@
 
 This repository provides tools to process GVCF files and produce VariantDataset (VDS) files using Hail. It is a modified and focused version of the [Oligogenicity Toolbox](https://github.com/OligoGeneticDiseases/gen-toolbox.git), designed to handle large-scale genomic data processing without annotation steps. The repository enables efficient collation and batching of multiple GVCF files into a single, unified VDS file.
 
+Documentation can be found here: https://oligogeneticdiseases.github.io/gvcf-to-vds-docs/
+
 ---
 
 ## **Concept**

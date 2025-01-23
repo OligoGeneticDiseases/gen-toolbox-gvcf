@@ -5,8 +5,8 @@ from pathlib import Path
 import hail as hl
 from pyspark import SparkContext, SparkConf
 
-from src.cli.command_factory import CommandFactory
-from src.cli.command_methods import CommandHandler
+from gvcf_to_vds_pipeline.cli.command_factory import CommandFactory
+from gvcf_to_vds_pipeline.cli.command_methods import CommandHandler
 
 
 def setup_parser():

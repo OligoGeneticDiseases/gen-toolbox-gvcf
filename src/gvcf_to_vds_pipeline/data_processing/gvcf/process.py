@@ -54,7 +54,7 @@ def build_or_combine_vds(
         save_path=save_path,
         gvcf_paths=gvcf_paths,
         vds_paths=vds_paths,
-        intervals=parsed_intervals,  # <--- new
+        intervals=parsed_intervals,
         import_interval_size=import_interval_size,
         use_genome_default_intervals=use_genome,
         use_exome_default_intervals=use_exome,
