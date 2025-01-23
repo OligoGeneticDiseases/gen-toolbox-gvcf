@@ -1,6 +1,6 @@
 # GVCF to VDS Pipeline
 
-This repository provides tools to process GVCF files and produce VariantDataset (VDS) files using Hail. It is a modified and focused version of the [Oligogenicity Toolbox](https://github.com/OligoGeneticDiseases/gen-toolbox.git), designed to handle large-scale genomic data processing without annotation steps. The repository enables efficient collation and batching of multiple GVCF files into a single, unified VDS file.
+A Python command-line tool to combine and convert GVCF files into a [Hail VariantDataset (VDS)](https://hail.is/docs/0.2/hail.vds.html) for large-scale genomic processing. This pipeline is designed for high-performance environments where annotation is not required, and focuses on the efficient batching of GVCF data into a single or combined VDS.
 
 Documentation can be found here: https://oligogeneticdiseases.github.io/gvcf-to-vds-docs/
 
@@ -17,104 +17,87 @@ This repository is specifically tailored for scenarios where annotation is not r
 
 ---
 
-## Developer Notes
-- All VCF ingestion code has been removed; we only handle GVCFs in this repository. 
-- For advanced usage or restarts, pass `--save_plan /some/path.json`, then if you want to restart the combiner after a failure, specify the same JSON plan.
-
-
-
 ## **Key Features**
 
-1. **GVCF File Reading:**
-   - Utilizes Hail's `read_vds()` to load existing VDS files for processing.
-   - Supports reading and parsing GVCF files.
+1. **Batch GVCF to VDS Conversion**  
+   - Converts multiple GVCFs into a single VDS.  
+   - Optionally incorporates an existing VDS for incremental updates.
 
-2. **Multi-Allelic Variant Splitting:**
-   - Uses Hail's `split_multi()` to handle multi-allelic variants in the dataset.
+2. **Multi-Allelic Splitting**  
+   - Uses [`hail.vds.split_multi`](https://hail.is/docs/0.2/hail.vds.html#hail.vds.split_multi) to handle multi-allelic variants.
 
-3. **Batch VDS Creation:**
-   - Combines multiple GVCF files into a single VDS file.
+3. **Reference & Variant Data**  
+   - Leverages Hail’s sparse representation (reference_data + variant_data) to handle large-scale genomic data efficiently.
 
-4. **Scalability:**
-   - Designed to work on high-performance computing systems with distributed processing.
+4. **Flexible Interval Handling**  
+   - Supports genome-wide intervals, exome intervals, or user-defined intervals.
+
+5. **Built-in Utilities**  
+   - Sample filtering, interval filtering, sample QC, and more.
 
 ---
 
-## **Setup**
+## **Installation**
 
-### **1. Clone the Repository**
+1. **Clone the Repository**  
 ```bash
-git clone <repository-url>
-cd <repository-folder>
+git clone https://github.com/OligoGeneticDiseases/gvcf-to-vds-pipeline.git
+cd gvcf-to-vds-pipeline
+```
+   
+2. **Install via pip**
+```bash
+pip install .
 ```
 
-2. Set Up a Python Environment
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
-3. Run the Application
-```bash
-python main.py --help
-```
+This installs the gvcf-to-vds command-line tool.
 
-## Usage
+## **Quickstart Usage**
 
-Available Commands
-
-The main.py file serves as the command-line interface (CLI) for the application. Below are the supported commands:
-	1.	Process GVCF to VDS
-	•	Reads GVCF files and converts them to VDS format.
-	•	Example:
 
 ```bash
-python main.py readgvcfs 
--f /path/to/gvcfs_or_dir 
--d /path/to/output.vds 
-–temp /tmp/combine-temp 
-–use_genome_intervals
-- `-f` / `--file`: Input file(s) or directory(ies) containing `.g.vcf`/`.g.vcf.gz`.
-- `-d` / `--dest`: Destination path for the final VDS.
-- `--temp`: Temporary directory for intermediate data.
-- `--use_genome_intervals`: If set, uses hail’s default genome partitioning.  
-- `--use_exome_intervals`: If set, uses hail’s exome partitioning.
+gvcf-to-vds readgvcfs \
+  -f /path/to/gvcf_folder \
+  -d /path/to/output.vds \
+  --temp /path/to/tmp/ \
+  --use_genome_intervals
 ```
-### Hail Methods Used
 
-1. hail.vds.read_vds()
+* -f or --file: One or more GVCFs or directories containing GVCFs.
+* -d or --dest: The destination path for the VDS.
+* --temp: A temporary directory for intermediate Spark/Hail files.
+* --use_genome_intervals or --use_exome_intervals: Use Hail’s built-in intervals.
+* --save_plan: Store the combiner plan in JSON for restarts if needed.
 
-Reads a VariantDataset (VDS) from a specified path.
+## **Commands Overview**
 
-vds = hl.vds.read_vds(path_to_vds)
+1. ```readgvcfs```
+Combine new GVCFs (and/or an existing VDS) into a unified VDS.
+2.	```filter_samples```
+Include or exclude specific samples from a VDS.
+3.	```filter_intervals```
+Keep or remove certain genomic intervals.
+4.	```sample_qc```
+Perform sample-level QC metrics.
+5.	```split_multi```
+Split multi-allelic variants.
+6.	```to_dense_mt```
+Convert the VDS to a dense Hail MatrixTable.
 
-2. hail.vds.split_multi()
+Run ```gvcf-to-vds --help``` or ```gvcf-to-vds <command> --help``` for all available options.
 
-Splits multi-allelic variants in a VDS.
-
-split_vds = hl.vds.split_multi(vds)
-
-## Research Context
+## *Research Context*
 
 ### Project
-
-• Title: Oligogenic Inheritance in Genetic Diseases
-
-• Objective: Collate large numbers of VCF files, annotate variants, and create variant frequency tables in a pipeline fashion.
-
-• Funding: Estonian Research Council, Grant PSG774.
-
-• Directed By: Tartu University Hospital Centre of Medical Genetics and Tartu University Institute of Clinical Medicine.
-
+* Title: Oligogenic Inheritance in Genetic Diseases
+* Objective of this repository: Combine large GVCF sets and produce unified variant datasets (VDS).
+* Funding: Estonian Research Council, Grant PSG774.
+* Institutions: Tartu University Hospital Centre of Medical Genetics; University of Tartu.
 
 ### Ethics and Privacy
+* Protocol: Approved under #362/T-6 by the University of Tartu Ethics Committee.
+* Data is processed internally, following strict privacy regulations.
 
-• Ethics Protocol: Approved under protocol 362/T-6 by the University of Tartu Research Ethics Committee.
-
-• Data Privacy: All analyses are performed in accordance with the data protection plan. Data is not publicly available.
-
-
-### Principal Investigator
-
-• Dr. Sander Pajusalu
-University of Tartu, Faculty of Medicine, Institute of Clinical Medicine.
+### Contact
+* Author: Markus Marandi markus.marandi@ut.ee
+* Principal Investigator: Dr. Sander Pajusalu (University of Tartu)
