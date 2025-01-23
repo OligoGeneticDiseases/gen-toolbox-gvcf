@@ -15,30 +15,11 @@ This repository is specifically tailored for scenarios where annotation is not r
 
 ---
 
-## **Libraries Used**
-- **[Hail](https://hail.is/):** A Python library for scalable genomic data analysis.
+## Developer Notes
+- All VCF ingestion code has been removed; we only handle GVCFs in this repository. 
+- For advanced usage or restarts, pass `--save_plan /some/path.json`, then if you want to restart the combiner after a failure, specify the same JSON plan.
 
----
 
-## **File Structure**
-```
-├── main.py                  # Entry point of the application
-└── src
-├── cli
-│   ├── command_handler.py  # CLI argument parsing and workflow orchestration
-│   └── command_methods.py  # Methods for processing commands
-├── data_processing
-│   ├── gvcf
-│   │   ├── read.py          # Functions for reading GVCF files
-│   │   └── process.py       # Functions for creating VDS files
-│   └── vds
-│       ├── combine.py       # Functions for batching multiple VDS files
-│       └── utils.py         # Helper functions for VDS processing
-└── utils
-├── logging.py           # Logging setup for monitoring execution
-└── config.py            # Configuration utilities
-```
----
 
 ## **Key Features**
 
@@ -84,27 +65,20 @@ The main.py file serves as the command-line interface (CLI) for the application.
 	1.	Process GVCF to VDS
 	•	Reads GVCF files and converts them to VDS format.
 	•	Example:
- 
-```bash
-python main.py process_gvcf --input path/to/gvcf --output path/to/vds
-```
-
-  2.	Combine VDS Files
-	•	Batches multiple VDS files into a single VDS.
-	•	Example:
 
 ```bash
-python main.py combine_vds --inputs path/to/vds1 path/to/vds2 --output path/to/combined_vds
+python main.py readgvcfs 
+-f /path/to/gvcfs_or_dir 
+-d /path/to/output.vds 
+–temp /tmp/combine-temp 
+–use_genome_intervals
+- `-f` / `--file`: Input file(s) or directory(ies) containing `.g.vcf`/`.g.vcf.gz`.
+- `-d` / `--dest`: Destination path for the final VDS.
+- `--temp`: Temporary directory for intermediate data.
+- `--use_genome_intervals`: If set, uses hail’s default genome partitioning.  
+- `--use_exome_intervals`: If set, uses hail’s exome partitioning.
 ```
-
-  3.	Split Multi-Allelic Variants
-	•	Splits multi-allelic variants within a VDS.
-	•	Example:
-
-```bash
-python main.py split_multi --input path/to/vds --output path/to/split_vds
-```
-Hail Methods Used
+### Hail Methods Used
 
 1. hail.vds.read_vds()
 
