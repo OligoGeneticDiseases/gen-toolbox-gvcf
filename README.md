@@ -24,7 +24,7 @@ This repository is specifically tailored for scenarios where annotation is not r
    - Optionally incorporates an existing VDS for incremental updates.
 
 2. **Multi-Allelic Splitting**  
-   - Uses [`hail.vds.split_multi`](https://hail.is/docs/0.2/hail.vds.html#hail.vds.split_multi) to handle multi-allelic variants.
+   - Uses [`hail.vds.split_multi`](https://hail.is/docs/0.2/vds/hail.vds.split_multi.html#hail.vds.split_multi) to handle multi-allelic variants.
 
 3. **Reference & Variant Data**  
    - Leverages Hail’s sparse representation (reference_data + variant_data) to handle large-scale genomic data efficiently.
