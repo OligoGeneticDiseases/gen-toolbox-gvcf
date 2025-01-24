@@ -99,5 +99,5 @@ Run ```gvcf-to-vds --help``` or ```gvcf-to-vds <command> --help``` for all avail
 * Data is processed internally, following strict privacy regulations.
 
 ### Contact
-* Author: Markus Marandi markus.marandi@ut.ee
+* Authors: Markus Marandi markus.marandi@ut.ee, Villem Pata
 * Principal Investigator: Dr. Sander Pajusalu (University of Tartu)
