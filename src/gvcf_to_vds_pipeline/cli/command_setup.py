@@ -67,6 +67,9 @@ def command_handlers(args, conf):
         "to_dense_mt": lambda: init_spark_and_run(
             args, conf, CommandHandler(args).handle_to_dense_mt_command
         ),
+        "combine_annotate": lambda: init_spark_and_run(
+            args, conf, CommandHandler(args).handle_combine_annotate_command
+        ),
     }
 
 

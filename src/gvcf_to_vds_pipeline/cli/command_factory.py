@@ -6,9 +6,6 @@ class CommandFactory:
         self.subparsers = parser.add_subparsers(title="commands", dest="command")
 
     def create_read_gvcfs_command(self):
-        """
-        Command for building or combining a VDS from GVCF(s).
-        """
         read_cmd = self.subparsers.add_parser(
             "readgvcfs",
             help="Combine GVCF file(s) (and optional existing VDS) into a new or updated VDS."
@@ -140,18 +137,71 @@ class CommandFactory:
             help="Path to the resulting dense MT."
         )
 
-    def setup_parser():
-        """
-        Sets up the command-line argument parser.
-        """
-        parser = argparse.ArgumentParser(description="GVCF to VDS Pipeline")
-        factory = CommandFactory(parser)
+    def create_combine_annotate_command(self):
+        ca_cmd = self.subparsers.add_parser(
+            "combine_annotate",
+            help="Combine GVCFs (and optional existing VDS), convert to a dense MatrixTable, annotate with VEP, and output the final annotated VDS."
+        )
+        ca_cmd.add_argument(
+            "-f", "--file", nargs="+", required=True,
+            help="Paths to GVCF file(s) or directories containing valid GVCF files."
+        )
+        ca_cmd.add_argument(
+            "--vds_in", type=str, default=None,
+            help="(Optional) Path to an existing VDS to combine with new GVCFs."
+        )
+        ca_cmd.add_argument(
+            "-d", "--dest", type=str, required=True,
+            help="Base destination path for the output files. Intermediate files will be created by appending suffixes."
+        )
+        ca_cmd.add_argument(
+            "--temp", type=str, required=True,
+            help="Temporary directory/bucket for intermediate data."
+        )
+        ca_cmd.add_argument(
+            "--save_plan", type=str, default=None,
+            help="Path to store the combiner plan JSON."
+        )
+        ca_cmd.add_argument(
+            "--use_genome_intervals", action="store_true", default=False,
+            help="Use whole-genome intervals for partitioning."
+        )
+        ca_cmd.add_argument(
+            "--use_exome_intervals", action="store_true", default=False,
+            help="Use exome intervals for partitioning."
+        )
+        ca_cmd.add_argument(
+            "--intervals", nargs="+", default=None,
+            help="List of intervals (e.g. chr1:1-100000) for partitioning."
+        )
+        ca_cmd.add_argument(
+            "--import_interval_size", type=int, default=None,
+            help="Interval size in base pairs for partitioning."
+        )
+        ca_cmd.add_argument(
+            "--combined_suffix", type=str, default=".combined",
+            help="Suffix for the combined VDS file."
+        )
+        ca_cmd.add_argument(
+            "--dense_suffix", type=str, default=".dense.mt",
+            help="Suffix for the dense MatrixTable file."
+        )
+        ca_cmd.add_argument(
+            "--annotated_suffix", type=str, default=".annotated",
+            help="Suffix for the final annotated VDS file."
+        )
 
+    @staticmethod
+    def setup_parser():
+        parser = argparse.ArgumentParser(
+            description="GVCF to VDS Pipeline"
+        )
+        factory = CommandFactory(parser)
         factory.create_read_gvcfs_command()
         factory.create_filter_samples_command()
         factory.create_filter_intervals_command()
         factory.create_sample_qc_command()
         factory.create_split_multi_command()
         factory.create_to_dense_mt_command()
-
+        factory.create_combine_annotate_command()
         return parser
